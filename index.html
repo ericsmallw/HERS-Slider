@@ -19,7 +19,12 @@
         }
 
         .ui-slider .ui-slider-handle {
-            width: auto;
+            width: 60px;
+            height: 60px;
+            margin-left: -30px;
+            background: url('triangle-512.png') no-repeat;
+            background-size: contain;
+            border: 0;
         }
 
         #slider label {
@@ -41,6 +46,13 @@
             width: 80%;
         }
 
+        #valueText{
+            text-align: center;
+            color: white;
+            top: 50%;
+            position: relative;
+        }
+
     </style>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -51,27 +63,36 @@
     <script>
         var app = angular.module("app", ['ui.slider']);
         app.controller("controller", function($scope){
-            $scope.currentValue = 64;
+            $scope.currentValue = 60;
         });
+
         $(document).ready(function(){
             var slider = $("#slider");
 
             $('.ui-slider-handle').append($("#valueText"));
             slider.each(function(){
-                var vals = 130;
+                var max = parseInt($(this).attr("max"));
+                var min = parseInt($(this).attr("min"));
+                var demarcationIncrement = 10;
+                var vals = max - min;
 
                 for(var i = 0; i <= vals; i++){
-                    if(i % 10 == 0) {
-                        var element = $('<label>' + (i + 0) + '</label>').css({"left" : (i / vals * 100) + '%', "top" : "-50%"});
-                        var element2 = $('<div></div>').css({"float": "left",
-                            "width" : '7.6%',
+                    var slider = $('#slider');
+                    if(i % demarcationIncrement == 0) {
+                        var element = $('<label>' + (i + min) + '</label>').css({"left" : (i / vals * 100) + '%', "top" : "-50%"});
+                        var element2 = $('<div class="demarcation"></div>').css({"float": "left",
+                            "width" : $(slider).width() / Math.floor(max/demarcationIncrement) - 1 + "px",
                             "height" : "100%",
-                            "border-right" : "2px white dotted"});
+                            "border-right" : "1px white dotted"});
 
-                        $('#slider').append(element);
-                        $('#slider').append(element2);
+                        $(slider).append(element);
+                        $(slider).append(element2);
                     }
                 }
+            });
+
+            $(window).resize(function(){
+                $('.demarcation').width($('#slider').width() / 13 - 1 + "px")
             });
         });
     </script>
@@ -79,7 +100,7 @@
 <body ng-controller="controller">
 <div id="sliderContainer" style="">
     <div id="slider" ui-slider min="0" max="130" ng-model="currentValue"></div>
-    <span id="valueText" ng-bind="currentValue" ></span>
+    <div id="valueText" ng-bind="currentValue" ></div>
 </div>
 </body>
 </html>
