@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
@@ -18,6 +18,10 @@
             bottom: -.3em !important;
         }
 
+        .ui-slider .ui-slider-handle {
+            width: auto;
+        }
+
         #slider label {
             position: absolute;
             width: 20px;
@@ -26,60 +30,56 @@
             text-align: center;
         }
 
-        .ui-slider .ui-slider-handle {
-            width: auto;
+        #sliderContainer{
+            display: flex; align-items:center
         }
 
+        #slider{
+            border: black 5px solid;
+            margin:auto;
+            margin-top:5%;
+            width: 80%;
+        }
 
     </style>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="bower_components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="ui-slider-master/src/slider.js"></script>
+
     <script>
-
+        var app = angular.module("app", ['ui.slider']);
+        app.controller("controller", function($scope){
+            $scope.currentValue = 64;
+        });
         $(document).ready(function(){
-            var min = 0;
-            var max = 130;
-            var step = 1;
-            var value = 50;
+            var slider = $("#slider");
 
-            var slider = $("#slider").slider({
-                range: "min",
-                value: value,
-                min: min,
-                max: max,
-                step: step,
-                slide: function( event, ui ) {
-                    $("span").html(ui.value);
-                }
-            });
-            $("span").html(value);
-
+            $('.ui-slider-handle').append($("#valueText"));
             slider.each(function(){
-                var vals = max - min;
+                var vals = 130;
 
                 for(var i = 0; i <= vals; i++){
                     if(i % 10 == 0) {
-                        var element = $('<label>' + (i + min) + '</label>').css({"left" : (i / vals * 100) + '%', "bottom" : "-50%"});
+                        var element = $('<label>' + (i + 0) + '</label>').css({"left" : (i / vals * 100) + '%', "top" : "-50%"});
                         var element2 = $('<div></div>').css({"float": "left",
-                                                             "width" : '7.6%',
-                                                             "height" : "100%",
-                                                             "border-right" : "2px white dotted"});
+                            "width" : '7.6%',
+                            "height" : "100%",
+                            "border-right" : "2px white dotted"});
 
                         $('#slider').append(element);
                         $('#slider').append(element2);
                     }
                 }
             });
-
-            $( "#amount" ).val( "$" + $( "#slider" ).slider( "value" ) );
         });
     </script>
 </head>
-<body>
-    <div id="sliderContainer"style="width: 80%">
-        <div id="slider"></div>
-    </div>
+<body ng-controller="controller">
+<div id="sliderContainer" style="">
+    <div id="slider" ui-slider min="0" max="130" ng-model="currentValue"></div>
+    <span id="valueText" ng-bind="currentValue" ></span>
+</div>
 </body>
 </html>
