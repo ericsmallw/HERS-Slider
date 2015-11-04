@@ -78,11 +78,10 @@
             var slider = $("#slider");
             var demarcationWidth = 3;
             var demarcationIncrement = 10;
+            var max = parseInt($(slider).attr("max"));
+            var min = parseInt($(slider).attr("min"));
             $('.ui-slider-handle').append($("#valueText"));
             slider.each(function(){
-                var max = parseInt($(this).attr("max"));
-                var min = parseInt($(this).attr("min"));
-
                 var vals = max - min;
 
                 for(var i = 0; i <= vals; i++){
