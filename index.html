@@ -74,12 +74,13 @@
 
         $(document).ready(function(){
             var slider = $("#slider");
-
+            var demarcationWidth = 3;
+            var demarcationIncrement = 10;
             $('.ui-slider-handle').append($("#valueText"));
             slider.each(function(){
                 var max = parseInt($(this).attr("max"));
                 var min = parseInt($(this).attr("min"));
-                var demarcationIncrement = 10;
+
                 var vals = max - min;
 
                 for(var i = 0; i <= vals; i++){
@@ -90,7 +91,7 @@
                         if(i/demarcationIncrement <= (max/demarcationIncrement - 2)){
                             var element2 = $('<div class="demarcation"></div>').css({
                                 "float": "left",
-                                "width": $(slider).width() / Math.floor(max / demarcationIncrement) - 3 + "px",
+                                "width": $(slider).width() / Math.floor(max / demarcationIncrement) - demarcationWidth + "px",
                                 "height": "100%",
                                 "border-right": "3px white dotted"
                             });
@@ -101,7 +102,7 @@
             });
 
             $(window).resize(function(){
-                $('.demarcation').width($('#slider').width() / 13 - 1 + "px")
+                $('.demarcation').width($('#slider').width() / Math.floor(max / demarcationIncrement) - demarcationWidth + "px")
             });
         });
     </script>
